@@ -59,7 +59,8 @@ uint8_t      RES_GO=0;				//进入AS Driving蜂鸣完成后此标志位记1
 uint8_t      Beep_flag=0;			//蜂鸣器标志位  0：工作中 1: 已完成蜂鸣
 uint8_t		 RES_LOST =0;
 uint8_t      Steering_ERROR = 0;     //转向电机报错位 0正常 1报错
-uint16_t      Steering_LOST_Flag =0;  //转向电机掉线位
+uint16_t     Steering_LOST_Flag =0;  //转向电机掉线位
+uint16_t     AMI_LOST_Flag =0;  //数采掉线位
 
 //---------------EBS油压（左前）----------------/
 uint16_t   			EBS_Oilh;   //油压数据是两个字节 但CAN一次只能发一个字节 拆成两个高和低两个字节再组合在一起

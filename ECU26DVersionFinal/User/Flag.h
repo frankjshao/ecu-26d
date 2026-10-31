@@ -65,7 +65,8 @@ extern uint8_t      RES_GO;				//进入AS Driving蜂鸣完成后此标志位记1
 extern uint8_t      Beep_flag;			//蜂鸣器标志位  0：工作中 1: 已完成蜂鸣
 extern uint8_t		 RES_LOST;
 extern uint8_t      Steering_ERROR;  
-extern uint16_t     Steering_LOST_Flag;
+extern uint16_t     Steering_LOST_Flag;  
+extern uint16_t     AMI_LOST_Flag;
 
 //---------------EBS油压（左前）----------------
 extern uint16_t   			EBS_Oilh;   //油压数据是两个字节 但CAN一次只能发一个字节 拆成两个高和低两个字节再组合在一起

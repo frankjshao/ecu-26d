@@ -222,7 +222,7 @@ void ECU_Task_10ms(void)
 
 					//准备->制动
 					//掉高压,ROS掉线,转向电机掉线
-					if(!SC_OUT || ROS_LOSE_Flag==255 || Steering_LOST_Flag==255)		
+					if(!SC_OUT || ROS_LOSE_Flag==255 || Steering_LOST_Flag==255 ||AMI_LOST_Flag==500)		
 					{
 						Emergency_Flag_Config();
 						Statu_Flag=6;
@@ -244,7 +244,7 @@ void ECU_Task_10ms(void)
 						
 					//行驶->制动
 					//掉高压，ROS掉线，转向电机报错，转向电机掉线
-					if(!SC_OUT || ROS_LOSE_Flag==255 || Steering_ERROR || Steering_LOST_Flag==255)
+					if(!SC_OUT || ROS_LOSE_Flag==255 || Steering_ERROR || Steering_LOST_Flag==255 ||AMI_LOST_Flag==500)
 					{
 						Emergency_Flag_Config();
 						Statu_Flag=6;
@@ -287,7 +287,7 @@ void ECU_Task_10ms(void)
 					break;
 					
 				case 6://制动 AS EMERGENCY
-					Motor_State();
+					Motor_State_Disable();
 					AMI_State=4;
 				
 					if(!ASMS && Beep_flag==1 && EBS_Air<=100)
@@ -424,6 +424,10 @@ void CAN1_RX0_IRQHandler(void)
 			Steering_LOST_Flag = 0; //转向电机掉线检测
 			break;
 		
+		case 0x045:    //数采报错检测
+			AMI_LOST_Flag = 0; //数采掉线检测
+			break;
+		
 	}
 	if(Motor_LF_State==3||Motor_LB_State==3||Motor_RF_State==3||Motor_RB_State==3)
 	{
@@ -455,6 +459,7 @@ void AS_ERROR_Test(void)
 		ROS_LOSE_Flag++;
 		RES_LOSE_Flag++;
 		HUAHAI_LOSE_Flag++;
+		AMI_LOST_Flag++;
 		if(Statu_Flag==3||Statu_Flag==4)
 		{
 			Steering_LOST_Flag++;
@@ -508,6 +513,11 @@ void AS_ERROR_Test(void)
 		else
 		{
 			Error_Flag&=0xEF;
+		}
+		
+		if(AMI_LOST_Flag>500)
+		{
+			AMI_LOST_Flag=500;
 		}
 }
 
